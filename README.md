@@ -40,16 +40,20 @@ AutoEncoder의 재구성 오차(Reconstruction Error)를 기반으로
 ➡ 총 5개 수치형 Feature
 
 ##  2-2. 크롤링 데이터
-- 네이버 뉴스 API 수집 
-- 하루 전체 뉴스 문장을 하나의 텍스트로 병합
-- → KoBERT CLS Embedding (768차원)
+- 네이버 뉴스 API 기반으로 날짜별 주요 금융 뉴스 수집
+- 하루 뉴스 여러 건을 하나의 텍스트 문서(merged_text) 로 합침
+- 날짜별 뉴스 기사 개수는 news_count 로 기록
+이후 텍스트는 KoBERT 임베딩으로 변환하여 AutoEncoder 입력으로 사용
+<p>→ KoBERT CLS Embedding (768차원)
 <img width="1115" height="399" alt="Image" src="https://github.com/user-attachments/assets/67648d67-2e37-44f1-9283-bcc9abd349f3" />
 
 ### 최종 입력 구조
+
+<img width="1752" height="399" alt="Image" src="https://github.com/user-attachments/assets/764caf21-e86b-48bf-a403-52cf61b68e70" />
 ```
-5 numerical features  
+6 numerical features  
 + 768 KoBERT embedding  
-= 총 773차원 Feature Vector
+= 총 774차원 Feature Vector
 ```
 
 ---
