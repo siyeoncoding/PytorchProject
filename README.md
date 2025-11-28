@@ -34,20 +34,26 @@ AutoEncoder의 재구성 오차(Reconstruction Error)를 기반으로
 | log_return | 로그 수익률 |
 | volatility_10d | 10일 이동 변동성 |
 | volume | 거래량 |
-![img_1.png](img_1.png)
+
+<img width="1098" height="446" alt="Image" src="https://github.com/user-attachments/assets/9487c447-a292-4673-a275-f506945ae446" />
+
 ➡ 총 5개 수치형 Feature
 
 ##  2-2. 크롤링 데이터
-- 네이버 뉴스 API 수집 
-- 하루 전체 뉴스 문장을 하나의 텍스트로 병합
-- → KoBERT CLS Embedding (768차원)
-![img_2.png](img_2.png)
+- 네이버 뉴스 API 기반으로 날짜별 주요 금융 뉴스 수집
+- 하루 뉴스 여러 건을 하나의 텍스트 문서(merged_text) 로 합침
+- 날짜별 뉴스 기사 개수는 news_count 로 기록
+이후 텍스트는 KoBERT 임베딩으로 변환하여 AutoEncoder 입력으로 사용
+<p>→ KoBERT CLS Embedding (768차원)
+<img width="1115" height="399" alt="Image" src="https://github.com/user-attachments/assets/67648d67-2e37-44f1-9283-bcc9abd349f3" />
 
 ### 최종 입력 구조
+
+<img width="1752" height="399" alt="Image" src="https://github.com/user-attachments/assets/764caf21-e86b-48bf-a403-52cf61b68e70" />
 ```
-5 numerical features  
+6 numerical features  
 + 768 KoBERT embedding  
-= 총 773차원 Feature Vector
+= 총 774차원 Feature Vector
 ```
 
 ---
@@ -84,16 +90,16 @@ Loss: MSE (Reconstruction Error)
 Batch Size에 따른 학습 곡선 비교.
 
 ## 🔹 Batch Size = 16  
-![ae_training_curve_16batch.png](models%2Fautoencoder%2Fae_training_curve_16batch.png)
+<img width="1600" height="1000" alt="Image" src="https://github.com/user-attachments/assets/adff7571-1c82-4c2c-b477-4617218e3ca2" />
 
 ## 🔹 Batch Size = 32 (Baseline)
-![ae_training_curve_32batch.png](models%2Fautoencoder%2Fae_training_curve_32batch.png)
+<img width="1600" height="1000" alt="Image" src="https://github.com/user-attachments/assets/79417351-4c7e-48ca-84a2-1f3069152915" />
 
 ## 🔹 Batch Size = 64  
-![ae_training_curve_64batch.png](models%2Fautoencoder%2Fae_training_curve_64batch.png)
+<img width="1600" height="1000" alt="Image" src="https://github.com/user-attachments/assets/9ff20866-6410-46cf-a728-60c6eb213bb0" />
 
 ## 🔹 6:2:2 분할 실험
-![ae_training_curve_622.png](models%2Fautoencoder%2Fae_training_curve_622.png)
+<img width="700" height="400" alt="Image" src="https://github.com/user-attachments/assets/b7b71ff7-01f4-4570-b57e-a7c686608c7b" />
 
 ### Observations
 - Batch Size 32 → 가장 안정적, 최적 성능  
@@ -106,7 +112,7 @@ Batch Size에 따른 학습 곡선 비교.
 # 6. 이상치 탐지 결과 (Top 20)
 
 ##  6-1. KOSPI 가격 + 이상치 위치  
-![A1_price_with_anomalies_top20.png](src%2Fanalysis%2Fanalysis%2Ffigures%2FA1_price_with_anomalies_top20.png)
+<img width="2985" height="1785" alt="Image" src="https://github.com/user-attachments/assets/a65f2182-8d00-4e5d-b583-3d57bfc7f5de" />
 
 🔴 붉은 점 = Reconstruction Error 상위 20개 날짜
 
@@ -115,14 +121,54 @@ Batch Size에 따른 학습 곡선 비교.
 ## 6-2. 이상치 Top 20 상세 뉴스 요약
 
 ### Page 1
-![A2_top20_anomaly_summaries_part1.png](src%2Fanalysis%2Fanalysis%2Ffigures%2FA2_top20_anomaly_summaries_part1.png)
+<img width="2985" height="1785" alt="Image" src="https://github.com/user-attachments/assets/f6b7c9cc-5cf4-4033-bc55-f3fa88d8cacd" />
 
 ### Page 2
-![A2_top20_anomaly_summaries_part2.png](src%2Fanalysis%2Fanalysis%2Ffigures%2FA2_top20_anomaly_summaries_part2.png)
+<img width="2800" height="1200" alt="Image" src="https://github.com/user-attachments/assets/cc82aeb3-f97a-400f-bb18-eafc9bec8005" />
 
 ### 내용 요약
 - 이상치 날짜는 **대규모 수주/전쟁/환율 변동/정책 충격** 등 주요 이벤트 집중
 - 뉴스 첫 문장으로 해당 시장 반응의 원인 유추하기
+
+---
+##  Reconstruction Error 기반 이상치 검증
+
+모델이 탐지한 Top 20 이상치 날짜가 실제 시장 이벤트(급등·급락, 거래량 폭증 등)와 얼마나 일치하는지 정량적으로 평가하였다.
+
+###  Spike 기준
+- |return| > **1%**
+- 또는 **10일 변동성 > 평균 + 2σ**
+- 또는 **거래량 > 평균 + 2σ**
+
+###  결과 요약
+- **상관계수 (anomaly_score ↔ |return|)**: **0.4728**
+- **이상치 중 실제 급등·급락(spike)와 일치한 비율**: **65%**
+
+---
+
+##  Top 20 Anomaly (요약)
+
+| Rank | Date | Close | Return | Volume | Score | Spike |
+|------|------------|---------|----------|--------------|-----------|--------|
+| 1 | 2025-10-21 | 3823.84 | 0.0024 | 526M | 0.0985 | X |
+| 2 | 2025-04-10 | 2445.06 | 0.0660 | 670M | 0.0973 | O |
+| 3 | 2025-10-29 | 4081.15 | 0.0176 | 466M | 0.0714 | O |
+| 4 | 2025-10-27 | 4042.83 | 0.0257 | 516M | 0.0686 | O |
+| 5 | 2025-04-07 | 2328.20 | -0.0557 | 619M | 0.0617 | O |
+| … | … | … | … | … | … | … |
+| 20 | 2025-10-14 | 3561.81 | -0.0063 | 734M | 0.0321 | O |
+
+> 전체 20개 중 **13개(65%)**가 실제 급등·급락 이벤트와 일치  
+> 나머지 35%는 가격 변화는 작지만 뉴스 텍스트 충격이 강한 날짜로 분석됨.
+
+---
+
+##  인사이트
+
+- Reconstruction Error가 높은 날은 실제 시장 이벤트가 존재하는 경우가 많다.
+- 가격만으로 잡을 수 없는 “뉴스 기반 이벤트(news shock)”도 모델이 포착한다.
+- 텍스트 기반 KoBERT embedding이 이상치 탐지 성능에 기여함.
+
 ---
 
 #  7. 결론 (Conclusion)
@@ -135,7 +181,7 @@ Batch Size에 따른 학습 곡선 비교.
 
 ---
 
-# 📁 8. 프로젝트 디렉토리 구조(요약)
+# 8. 프로젝트 디렉토리 구조(요약)
 
 ```
 PytorchProject/
