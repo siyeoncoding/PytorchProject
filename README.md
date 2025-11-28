@@ -34,19 +34,18 @@ AutoEncoder의 재구성 오차(Reconstruction Error)를 기반으로
 | log_return | 로그 수익률 |
 | volatility_10d | 10일 이동 변동성 |
 | volume | 거래량 |
-| news_count | 해당 날짜 뉴스 개수 |
 ![img_1.png](img_1.png)
-➡ 총 6개 수치형 Feature
+➡ 총 5개 수치형 Feature
 
 ##  2-2. 크롤링 데이터
 - 네이버 뉴스 API 수집 
 - 하루 전체 뉴스 문장을 하나의 텍스트로 병합
 - → KoBERT CLS Embedding (768차원)
-![img.png](img.png)
+![img_2.png](img_2.png)
 
 ### 최종 입력 구조
 ```
-6 numerical features  
+5 numerical features  
 + 768 KoBERT embedding  
 = 총 773차원 Feature Vector
 ```
