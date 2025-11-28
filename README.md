@@ -34,7 +34,9 @@ AutoEncoder의 재구성 오차(Reconstruction Error)를 기반으로
 | log_return | 로그 수익률 |
 | volatility_10d | 10일 이동 변동성 |
 | volume | 거래량 |
-[![img_1.png](img_1.png)](https://github.com/siyeoncoding/PytorchProject/issues/new)
+
+<img width="1098" height="446" alt="Image" src="https://github.com/user-attachments/assets/9487c447-a292-4673-a275-f506945ae446" />
+
 ➡ 총 5개 수치형 Feature
 
 ##  2-2. 크롤링 데이터
@@ -84,16 +86,16 @@ Loss: MSE (Reconstruction Error)
 Batch Size에 따른 학습 곡선 비교.
 
 ## 🔹 Batch Size = 16  
-![ae_training_curve_16batch.png](models%2Fautoencoder%2Fae_training_curve_16batch.png)
+<img width="1600" height="1000" alt="Image" src="https://github.com/user-attachments/assets/adff7571-1c82-4c2c-b477-4617218e3ca2" />
 
 ## 🔹 Batch Size = 32 (Baseline)
-![ae_training_curve_32batch.png](models%2Fautoencoder%2Fae_training_curve_32batch.png)
+<img width="1600" height="1000" alt="Image" src="https://github.com/user-attachments/assets/79417351-4c7e-48ca-84a2-1f3069152915" />
 
 ## 🔹 Batch Size = 64  
-![ae_training_curve_64batch.png](models%2Fautoencoder%2Fae_training_curve_64batch.png)
+<img width="1600" height="1000" alt="Image" src="https://github.com/user-attachments/assets/9ff20866-6410-46cf-a728-60c6eb213bb0" />
 
 ## 🔹 6:2:2 분할 실험
-![ae_training_curve_622.png](models%2Fautoencoder%2Fae_training_curve_622.png)
+<img width="700" height="400" alt="Image" src="https://github.com/user-attachments/assets/b7b71ff7-01f4-4570-b57e-a7c686608c7b" />
 
 ### Observations
 - Batch Size 32 → 가장 안정적, 최적 성능  
@@ -106,7 +108,7 @@ Batch Size에 따른 학습 곡선 비교.
 # 6. 이상치 탐지 결과 (Top 20)
 
 ##  6-1. KOSPI 가격 + 이상치 위치  
-![A1_price_with_anomalies_top20.png](src%2Fanalysis%2Fanalysis%2Ffigures%2FA1_price_with_anomalies_top20.png)
+<img width="2985" height="1785" alt="Image" src="https://github.com/user-attachments/assets/a65f2182-8d00-4e5d-b583-3d57bfc7f5de" />
 
 🔴 붉은 점 = Reconstruction Error 상위 20개 날짜
 
@@ -115,10 +117,10 @@ Batch Size에 따른 학습 곡선 비교.
 ## 6-2. 이상치 Top 20 상세 뉴스 요약
 
 ### Page 1
-![A2_top20_anomaly_summaries_part1.png](src%2Fanalysis%2Fanalysis%2Ffigures%2FA2_top20_anomaly_summaries_part1.png)
+<img width="2985" height="1785" alt="Image" src="https://github.com/user-attachments/assets/f6b7c9cc-5cf4-4033-bc55-f3fa88d8cacd" />
 
 ### Page 2
-![A2_top20_anomaly_summaries_part2.png](src%2Fanalysis%2Fanalysis%2Ffigures%2FA2_top20_anomaly_summaries_part2.png)
+<img width="2800" height="1200" alt="Image" src="https://github.com/user-attachments/assets/cc82aeb3-f97a-400f-bb18-eafc9bec8005" />
 
 ### 내용 요약
 - 이상치 날짜는 **대규모 수주/전쟁/환율 변동/정책 충격** 등 주요 이벤트 집중
