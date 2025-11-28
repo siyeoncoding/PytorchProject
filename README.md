@@ -167,7 +167,7 @@ Batch Size에 따른 학습 곡선 비교.
 
 - Reconstruction Error가 높은 날은 실제 시장 이벤트가 존재하는 경우가 많다.
 - 가격만으로 잡을 수 없는 “뉴스 기반 이벤트(news shock)”도 모델이 포착한다.
-- 텍스트 기반 KoBERT embedding이 이상치 탐지 성능에 확실히 기여함.
+- 텍스트 기반 KoBERT embedding이 이상치 탐지 성능에 기여함.
 
 ---
 
